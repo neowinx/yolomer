@@ -2,10 +2,7 @@ FROM         base/archlinux
 
 MAINTAINER   Pedro Flores <pflores@codelab.com.py>
 
-RUN          export https_proxy='http://10.128.24.83:5865/' && \
-             export http_proxy='http://10.128.24.83:5865/' && \
-             export no_proxy='127.0.0.1,localhost,*.dncp.gov.py,*.contrataciones.gov.py,10.128.24.*,192.168.*' && \
-             pacman -Sy --noconfirm && \
+RUN          pacman -Sy --noconfirm && \
              pacman-key --refresh-keys && \
              pacman-db-upgrade && \
              pacman -S --noconfirm nodejs npm openssl git && \
