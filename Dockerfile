@@ -2,21 +2,16 @@ FROM         base/archlinux
 
 MAINTAINER   Pedro Flores <pflores@codelab.com.py>
 
-RUN          pacman -Sy --noconfirm && \
-             pacman-key --refresh-keys && \
+RUN          pacman-key --refresh-keys && \
+             pacman -Syu --noconfirm && \
              pacman-db-upgrade && \
-             pacman -S --noconfirm nodejs npm openssl git && \
+             pacman -S --noconfirm npm openssl git && \
              pacman -Scc --noconfirm && \
-             mkdir "${HOME}/.npm-packages" && \
-             export NPM_PACKAGES="${HOME}/.npm-packages" && \
-             echo "NPM_PACKAGES=\"${HOME}/.npm-packages\"" >> "${HOME}/.bashrc" && \
-             echo "prefix=${HOME}/.npm-packages" >> "${HOME}/.npmrc" && \
-             echo "NODE_PATH=\"$NPM_PACKAGES/lib/node_modules:$NODE_PATH\"" >> "${HOME}/.bashrc" && \
-             echo "PATH=\"$NPM_PACKAGES/bin:$PATH\"" >> "${HOME}/.bashrc" && \
-             echo "unset MANPATH" >> "${HOME}/.bashrc" && \
-             npm install --global npm@latest && \
-             npm install --global yo bower grunt-cli
-             # Man no se encuentra instalado por defecto en la imagen docker de base/arch, se ignora esta parte
-             # echo "MANPATH=\"$NPM_PACKAGES/share/man:$(manpath)\"" >> "${HOME}/.bashrc"
-
-ENTRYPOINT   /bin/bash
+             useradd -m yolomer && \
+             export INSTALLED_USER=yolomer && \
+             su - -c 'mkdir "${HOME}/.npm-packages"' $INSTALLED_USER && \
+             su - -c 'echo "prefix=${HOME}/.npm-packages" >> ~/.npmrc' $INSTALLED_USER && \
+             su - -c 'echo "NPM_PACKAGES=\"${HOME}/.npm-packages\"" >> ~/.bashrc' $INSTALLED_USER && \
+             su - -c 'echo "PATH=\"\$NPM_PACKAGES/bin:\$PATH\"" >> ~/.bashrc' $INSTALLED_USER && \
+             su - -c 'npm install -g npm@latest' $INSTALLED_USER && \
+             su - -c 'npm install -g bower gulp grunt-cli yo' $INSTALLED_USER
