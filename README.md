@@ -11,16 +11,12 @@ This image is ready to use and prepared to execute all commands inside the yolom
 
 ## How to use
 
-To download npm and bower dependencies, you could use the image like this:
+Just execute te image, and then the npm, bower, yeoman or gulp commands inside the created container. Once your'e finished, just type **exit** to exit the container:
 
 ```bash
-docker run --rm -ti -u yolomer:yolomer -w /home/yolomer/src -v `pwd`:/home/yolomer/src neowinx/yolomer npm install && bower install
-```
-
-or if you would like to execute gulp serve, use it like this:
-
-```bash
-docker run --rm -ti -u yolomer:yolomer -w /home/yolomer/src -p 5000:5000 -v `pwd`:/home/yolomer/src neowinx/yolomer gulp serve
+docker run --rm -ti -u yolomer:yolomer -w /home/yolomer/src -v `pwd`:/home/yolomer/src neowinx/yolomer
+[yolomer@31513da23252 src]$ npm install && bower install
+[yolomer@31513da23252 src]$ exit
 ```
 
 ## The lazy way (-_-)
@@ -61,13 +57,14 @@ What this command does is mount the current working directory inside the contain
 #### Install npm and bower dependencies
 
 ```bash
-./yolomer npm install && bower install
+[yolomer@532ca6607ea2 src]$ npm install && bower install
 ```
 
 #### Execute gulp serve inside a polymer project and (acces it throught the 5000 port):
 
 ```bash
-./yolomer gulp serve
+./yolomer
+[yolomer@0a8a92a271a8 src]$ gulp serve
 ```
 
 ## FAQ
